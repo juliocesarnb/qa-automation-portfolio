@@ -1,13 +1,13 @@
 # QA Automation Portfolio
 
-Production-style QA automation portfolio covering API, end-to-end, and performance testing against stable public demo targets.
+Portfólio de automação de testes em nível profissional, cobrindo testes de API, end-to-end e performance em alvos públicos e estáveis para demonstração.
 
-## Scope
+## Escopo
 
-- Cypress E2E tests target SauceDemo: `https://www.saucedemo.com/`
-- API tests and k6 performance tests target Swagger Petstore: `https://petstore.swagger.io/v2`
+- Os testes E2E com Cypress validam o SauceDemo: `https://www.saucedemo.com/`
+- Os testes de API e performance com k6 validam o Swagger Petstore: `https://petstore.swagger.io/v2`
 
-## Repository Structure
+## Estrutura do Repositório
 
 ```text
 qa-automation-portfolio/
@@ -37,7 +37,7 @@ qa-automation-portfolio/
 `-- README.md
 ```
 
-## Tech Stack
+## Tecnologias Utilizadas
 
 - Postman Collection v2.1
 - Newman
@@ -45,66 +45,66 @@ qa-automation-portfolio/
 - k6
 - GitHub Actions
 
-## Test Coverage
+## Cobertura de Testes
 
-### API Testing
+### Testes de API
 
-The Postman collection automates a full CRUD workflow for Swagger Petstore:
+A collection do Postman automatiza um fluxo CRUD completo para o Swagger Petstore:
 
-- `POST /pet` creates a pet with a dynamic `petId`
-- `GET /pet/{id}` validates the created record
-- `PUT /pet` updates the pet name and status
-- `DELETE /pet/{id}` removes the test data
-- Negative validation confirms a non-existing pet returns `404`
+- `POST /pet` cria um pet com `petId` dinâmico
+- `GET /pet/{id}` valida o registro criado
+- `PUT /pet` atualiza nome e status do pet
+- `DELETE /pet/{id}` remove a massa de teste
+- O cenário negativo valida que um pet inexistente retorna `404`
 
-Assertions cover:
+Asserções cobrem:
 
-- HTTP status codes
-- Response body fields
-- Environment variable reuse across requests
-- Cleanup validation after deletion
+- Status codes HTTP
+- Campos do corpo da resposta
+- Reutilização de variáveis de ambiente entre requisições
+- Validação de limpeza após exclusão
 
-### E2E Testing
+### Testes E2E
 
-Cypress validates core shopper flows on SauceDemo using Page Object Model:
+O Cypress valida os principais fluxos do usuário no SauceDemo usando Page Object Model:
 
-- Login with `standard_user`
-- Add product to cart
-- Complete checkout flow
-- Edge-user coverage for `problem_user`, `performance_glitch_user`, and `error_user`
+- Login com `standard_user`
+- Adição de produto ao carrinho
+- Fluxo completo de checkout
+- Cobertura de usuários especiais como `problem_user`, `performance_glitch_user` e `error_user`
 
-Assertions cover:
+Asserções cobrem:
 
-- URL changes
-- Element visibility
-- Cart badge behavior
-- Known edge-case behavior in special test accounts
+- Mudanças de URL
+- Visibilidade de elementos
+- Comportamento do badge do carrinho
+- Comportamentos conhecidos de borda nas contas especiais
 
-### Performance Testing
+### Testes de Performance
 
-k6 validates Swagger Petstore under staged load:
+O k6 valida o Swagger Petstore sob carga progressiva:
 
-- Ramp up virtual users
-- Sustain traffic
-- Ramp down gracefully
-- Execute both `POST /pet` and `GET /pet/{id}`
+- Ramp up de usuários virtuais
+- Sustentação de carga
+- Ramp down controlado
+- Execução de `POST /pet` e `GET /pet/{id}`
 
 Thresholds:
 
 - `p95 < 500ms`
 - `http_req_failed < 1%`
 
-## Local Setup
+## Execução Local
 
-### Prerequisites
+### Pré-requisitos
 
 - Node.js 18+
 - npm 9+
-- k6 installed locally
+- k6 instalado localmente
 
-### Environment
+### Ambiente
 
-Copy `.env.example` to `.env` if you want to override defaults.
+Copie `.env.example` para `.env` se quiser sobrescrever os valores padrão.
 
 ```bash
 PETSTORE_BASE_URL=https://petstore.swagger.io/v2
@@ -112,20 +112,20 @@ E2E_BASE_URL=https://www.saucedemo.com
 PERFORMANCE_BASE_URL=https://petstore.swagger.io/v2/pet
 ```
 
-### Install Dependencies
+### Instalação de Dependências
 
 ```bash
 npm run install:all
 ```
 
-Or install each suite independently:
+Ou instale cada suíte separadamente:
 
 ```bash
 npm install --prefix api-tests
 npm install --prefix e2e-tests
 ```
 
-## Running Tests
+## Como Executar os Testes
 
 ### API
 
@@ -147,26 +147,26 @@ npm run test:e2e:open
 npm run test:perf
 ```
 
-### Run All Available Suites
+### Executar Todas as Suítes
 
 ```bash
 npm run test:all
 ```
 
-## CI Pipeline
+## Pipeline de CI
 
-GitHub Actions runs three isolated jobs:
+O GitHub Actions executa três jobs isolados:
 
-1. API tests with Newman and HTML report generation
-2. Cypress E2E tests against SauceDemo
-3. k6 performance tests against Swagger Petstore
+1. Testes de API com Newman e geração de relatório HTML
+2. Testes E2E com Cypress contra o SauceDemo
+3. Testes de performance com k6 contra o Swagger Petstore
 
-Artifacts uploaded by the workflow:
+Artefatos publicados pelo workflow:
 
-- Newman HTML report
-- Cypress screenshots
-- Cypress videos
+- Relatório HTML do Newman
+- Screenshots do Cypress
+- Vídeos do Cypress
 
-## Strategy
+## Estratégia
 
-The detailed testing rationale lives in [docs/test-strategy.md](docs/test-strategy.md).
+O racional detalhado da estratégia de testes está em [docs/test-strategy.md](docs/test-strategy.md).
