@@ -27,6 +27,11 @@ describe('Edge Users', () => {
     cy.fixture('users').then(({ error_user: user }) => {
       cy.fixture('products').then(({ checkoutProduct }) => {
         cy.fixture('checkout').then((customer) => {
+          cy.once('uncaught:exception', (error) => {
+            expect(error.message).to.include("Cannot read properties of undefined");
+            return false;
+          });
+
           LoginPage.visit();
           LoginPage.loginAs(user.username, user.password);
 

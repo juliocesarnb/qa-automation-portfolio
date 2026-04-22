@@ -1,5 +1,5 @@
-const LoginPage = require('../../../pages/LoginPage');
-const InventoryPage = require('../../../pages/InventoryPage');
+const LoginPage = require('../../pages/LoginPage');
+const InventoryPage = require('../../pages/InventoryPage');
 
 describe('Smoke - Authentication', () => {
   it('logs in successfully with standard_user', () => {
