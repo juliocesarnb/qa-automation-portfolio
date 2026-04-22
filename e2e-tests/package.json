@@ -1,0 +1,14 @@
+{
+  "name": "qa-automation-portfolio-e2e-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SauceDemo end-to-end tests with Cypress.",
+  "scripts": {
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:e2e:headed": "cypress run --headed"
+  },
+  "devDependencies": {
+    "cypress": "^13.0.0"
+  }
+}

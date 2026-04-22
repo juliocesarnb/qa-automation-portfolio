@@ -1,0 +1,25 @@
+{
+  "name": "qa-automation-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-level QA automation portfolio for Swagger Petstore and SauceDemo.",
+  "scripts": {
+    "install:all": "npm install --prefix api-tests && npm install --prefix e2e-tests",
+    "test:api": "npm run test:api --prefix api-tests",
+    "test:api:html": "npm run test:api:html --prefix api-tests",
+    "test:e2e": "npm run test:e2e --prefix e2e-tests",
+    "test:e2e:open": "npm run test:e2e:open --prefix e2e-tests",
+    "test:perf": "k6 run performance-tests/performance-test.js",
+    "test:all": "npm run test:api && npm run test:e2e && npm run test:perf"
+  },
+  "keywords": [
+    "qa",
+    "automation",
+    "cypress",
+    "newman",
+    "postman",
+    "k6"
+  ],
+  "license": "MIT",
+  "type": "commonjs"
+}

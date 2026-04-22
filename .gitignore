@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+*.log
+.DS_Store
+coverage/
+api-tests/reports/*
+!api-tests/reports/.gitkeep
+e2e-tests/cypress/screenshots/
+e2e-tests/cypress/videos/

@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "Swagger Petstore CRUD Collection",
+    "_postman_id": "c819e5d1-3fb6-4495-bf65-7c3405657f95",
+    "description": "Production-style CRUD and negative coverage for Swagger Petstore using dynamic environment variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Pet",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const randomId = Math.floor(Date.now() + Math.random() * 10000);",
+              "pm.environment.set('petId', String(randomId));",
+              "pm.environment.set('petName', `qa-pet-${randomId}`);",
+              "pm.environment.set('updatedPetName', `qa-pet-updated-${randomId}`);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "const petId = Number(pm.environment.get('petId'));",
+              "",
+              "pm.test('Created pet uses generated id', function () {",
+              "  pm.expect(response.id).to.eql(petId);",
+              "});",
+              "",
+              "pm.test('Created pet uses generated name', function () {",
+              "  pm.expect(response.name).to.eql(pm.environment.get('petName'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": {{petId}},\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"dogs\"\n  },\n  \"name\": \"{{petName}}\",\n  \"photoUrls\": [\n    \"https://example.com/pets/{{petId}}.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"qa\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+        },
+        "url": "{{baseUrl}}/pet"
+      }
+    },
+    {
+      "name": "Get Created Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Created pet can be fetched by id', function () {",
+              "  pm.expect(response.id).to.eql(Number(pm.environment.get('petId')));",
+              "});",
+              "",
+              "pm.test('Fetched pet matches initial status', function () {",
+              "  pm.expect(response.status).to.eql('available');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/pet/{{petId}}"
+      }
+    },
+    {
+      "name": "Update Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Updated pet keeps the same id', function () {",
+              "  pm.expect(response.id).to.eql(Number(pm.environment.get('petId')));",
+              "});",
+              "",
+              "pm.test('Updated pet name is persisted', function () {",
+              "  pm.expect(response.name).to.eql(pm.environment.get('updatedPetName'));",
+              "});",
+              "",
+              "pm.test('Updated pet status is sold', function () {",
+              "  pm.expect(response.status).to.eql('sold');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": {{petId}},\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"dogs\"\n  },\n  \"name\": \"{{updatedPetName}}\",\n  \"photoUrls\": [\n    \"https://example.com/pets/{{petId}}.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 2,\n      \"name\": \"qa-updated\"\n    }\n  ],\n  \"status\": \"sold\"\n}"
+        },
+        "url": "{{baseUrl}}/pet"
+      }
+    },
+    {
+      "name": "Validate Updated Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Pet reflects the updated name', function () {",
+              "  pm.expect(response.name).to.eql(pm.environment.get('updatedPetName'));",
+              "});",
+              "",
+              "pm.test('Pet reflects the updated status', function () {",
+              "  pm.expect(response.status).to.eql('sold');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/pet/{{petId}}"
+      }
+    },
+    {
+      "name": "Get Non-existing Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 404', function () {",
+              "  pm.response.to.have.status(404);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Error body reports pet not found', function () {",
+              "  pm.expect(response.message).to.include('not found');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/pet/{{missingPetId}}"
+      }
+    },
+    {
+      "name": "Delete Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Delete confirmation contains target id', function () {",
+              "  pm.expect(response.message).to.eql(pm.environment.get('petId'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/pet/{{petId}}"
+      }
+    },
+    {
+      "name": "Validate Pet Deletion",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 404 after delete', function () {",
+              "  pm.response.to.have.status(404);",
+              "});",
+              "",
+              "const response = pm.response.json();",
+              "",
+              "pm.test('Deleted pet is no longer available', function () {",
+              "  pm.expect(response.message).to.include('not found');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/pet/{{petId}}"
+      }
+    }
+  ]
+}
